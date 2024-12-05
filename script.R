@@ -38,21 +38,32 @@ fetch_api_data <- function() {
     }
     citation_data <- fromJSON(content(response, "text", encoding = "UTF-8"), flatten = TRUE)
     
+    # Check for missing fields and handle gracefully
+    bookTitle <- ifelse(!is.null(citation_data$title), citation_data$title, NA)
+    Author <- ifelse(!is.null(citation_data$authors$full_name), 
+                     paste(citation_data$authors$full_name, collapse = ", "), 
+                     NA)
+    Year <- ifelse(!is.null(citation_data$published_date), 
+                   year(as.Date(citation_data$published_date)), 
+                   NA)
+    hdl <- ifelse(!is.null(citation_data$handle), citation_data$handle, NA)
+    
     # Put the citation into a data frame
     citation_df <- data.frame(
-      Citation = citation_data$citation,
-      URL = citation_data$figshare_url,
-      Year = year(as.Date(citation_data$published_date, format = "%Y-%m-%d"))
+      bookTitle = bookTitle,
+      Author = Author,
+      Year = Year,
+      hdl = hdl,
+      stringsAsFactors = FALSE
     )
     combined_df <- rbind(combined_df, citation_df)
     number <- number + 1
     print(number)
   }
   
-  # Remove duplicates
-  deduplicated_df <- distinct(combined_df, .keep_all = TRUE)
-  
+  # Sort alphabetically by bookTitle
+  combined_df <- combined_df[order(combined_df$bookTitle), ]
+
   # Assign the final datasets to the global environment
-  assign("citation_data", deduplicated_df, envir = .GlobalEnv)
-  assign("deduplicated_df", deduplicated_df, envir = .GlobalEnv)
+  assign("combined_df", value = combined_df, envir = .GlobalEnv)
 }
