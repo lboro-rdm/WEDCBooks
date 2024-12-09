@@ -6,14 +6,15 @@ library(httr)
 library(jsonlite)
 library(dplyr)
 
-source("script.R")
 source("global.R")
 
-ui <- fluidPage(
-  titlePanel(
-    HTML('<span style="color: #361163;">WEDC, Loughborough University:</span> 
-        <span style="color: #b70062;">Books and manuals</span>')
-  ),
+ui <- tags$html(
+  lang = "en",  # Set the language attribute here
+  fluidPage(
+    titlePanel(
+      HTML('<span style="color: #361163;">WEDC, Loughborough University:</span> 
+          <span style="color: #b70062;">Books and manuals</span><br><br>')
+    ),
   
   # CSS to set the background color and font size
   tags$head(
@@ -36,4 +37,5 @@ ui <- fluidPage(
     style = "margin-left: 20px; margin-right: 20px;",
     withSpinner(uiOutput("bookDetails"), type = 3, color = "#361163", color.background = "#FFFFFF")
   )
+)
 )
