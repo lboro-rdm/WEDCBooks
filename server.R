@@ -16,7 +16,7 @@ server <- function(input, output, session) {
                  combined_df$Author[i], ". (", 
                  combined_df$Year[i], "). Loughborough University. Book. </span>",
                  '<a href="https://hdl.handle.net/', combined_df$hdl[i], 
-                 '" style="color: #009bc9;" target="_blank">https://hdl.handle.net/', combined_df$hdl[i], '</a>',
+                 '" style="color: #009BC9;" target="_blank">https://hdl.handle.net/', combined_df$hdl[i], '</a>',
                  "</div>")
         })
         
