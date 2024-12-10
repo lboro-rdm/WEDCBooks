@@ -39,6 +39,9 @@ ui <- tags$html(
           color: #6F3092;
           font-family: 'DIN', sans-serif;
         }
+        a.hover-underline: hover {
+          text-decoration: underline;
+        }
     "))
   ),
   
