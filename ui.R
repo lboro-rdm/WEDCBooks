@@ -6,8 +6,6 @@ library(httr)
 library(jsonlite)
 library(dplyr)
 
-source("global.R")
-
 ui <- tags$html(
   lang = "en",  # Set the language attribute here
   fluidPage(
