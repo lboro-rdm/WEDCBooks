@@ -13,12 +13,10 @@ server <- function(input, output, session) {
           paste0(
             "<div style='margin-bottom: 10px;'>", # Add bottom margin
             "<strong><a href='https://hdl.handle.net/", combined_df$hdl[i], 
-            "' style='color: #002c3d; text-decoration: none;' target='_blank' class='hover-underline'>",
+            "' style='color: #002c3d; text-decoration: underline;' target='_blank' class='hover-underline'>",
             combined_df$bookTitle[i], "</a></strong>. ", 
             "<span style='color: #002c3d;'>", combined_df$Author[i], ". (", 
             combined_df$Year[i], "). Loughborough University. Book. </span>",
-            "<a href='https://hdl.handle.net/", combined_df$hdl[i], 
-            "' style='color: #009BC9;' target='_blank'>https://hdl.handle.net/", combined_df$hdl[i], "</a>",
             "</div>"
           )
           
