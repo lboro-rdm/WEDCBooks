@@ -15,13 +15,14 @@ server <- function(input, output, session) {
     df <- booksData()
     if (!is.null(df)) {
       updateSelectInput(
-        session, 
+        session,
         "collectionSelect",
-        choices = unique(df$collection_title),
-        selected = NULL
+        choices = c("All", unique(df$collection_title)),  # Add "All" option
+        selected = "All"
       )
     }
   })
+  
   
   # Reactive function to filter books based on inputs
   filteredBooks <- reactive({
@@ -29,7 +30,7 @@ server <- function(input, output, session) {
     if (is.null(df)) return(NULL)
     
     # Apply filters
-    if (!is.null(input$collectionSelect) && input$collectionSelect != "") {
+    if (!is.null(input$collectionSelect) && input$collectionSelect != "All" && input$collectionSelect != "") {
       df <- df[df$collection_title == input$collectionSelect, ]
     }
     if (!is.null(input$authorSearch) && input$authorSearch != "") {
@@ -37,6 +38,11 @@ server <- function(input, output, session) {
     }
     if (!is.null(input$titleSearch) && input$titleSearch != "") {
       df <- df[grepl(input$titleSearch, df$title, ignore.case = TRUE), ]
+    }
+    
+    # Sort by title alphabetically
+    if (!is.null(df) && nrow(df) > 0) {
+      df <- df[order(df$title, decreasing = FALSE), ]
     }
     
     df

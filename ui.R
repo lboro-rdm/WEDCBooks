@@ -56,22 +56,15 @@ ui <- tags$html(
           inputId = "titleSearch",
           label = "Search by Title:",
           placeholder = "Enter book or manual title"
-        ),
-        
-        # Search Button
-        actionButton(
-          inputId = "searchButton",
-          label = "Search",
-          icon = icon("search"),
-          class = "btn-primary"
         )
+
       ),
       
       mainPanel(
         fluidRow(
           style = "margin-left: 20px; margin-right: 20px;",
           withSpinner(
-            DTOutput("bookDetails"),
+            uiOutput("bookDetails"),
             type = 3,
             color = "#009BC9",
             color.background = "#FFFFFF"
