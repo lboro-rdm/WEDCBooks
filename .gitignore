@@ -8,7 +8,7 @@
 
 # User-specific files
 .Ruserdata
-global.R
+.Renviron
 
 # Example code in package build process
 *-Ex.R
