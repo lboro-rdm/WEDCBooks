@@ -77,6 +77,7 @@ combined_df <- data.frame(
 
 # Iterate through article IDs to get article citation data
 for (i in 1:nrow(article_details)) {
+  print(i)
   article_id <- article_details$article_id[i]
   full_url_citation <- paste0(endpoint2, article_id)
   
@@ -102,16 +103,16 @@ for (i in 1:nrow(article_details)) {
     NA
   }
   
-  hdl <- if (!is.null(citation_data$handle)) {
-    citation_data$handle
+  hdl <- if (!is.null(citation_data$handle) && citation_data$handle != "") {
+    paste0("https://hdl.handle.net/", citation_data$handle)
   } else {
-    NA
+    ""
   }
   
-  doi <- if (!is.null(citation_data$doi)) {
-    citation_data$doi
+  doi <- if (!is.null(citation_data$doi) && citation_data$doi != "") {
+    paste0("https://doi.org/", citation_data$doi)
   } else {
-    NA
+    ""
   }
   
   # Append the citation data to the combined data frame

@@ -40,6 +40,12 @@ server <- function(input, output, session) {
       df <- df[grepl(input$titleSearch, df$title, ignore.case = TRUE), ]
     }
     
+    # Remove duplicate entries based on unique fields (e.g., title and Author)
+    if (!is.null(df) && nrow(df) > 0) {
+      df <- df %>%
+        dplyr::distinct(title, Author, .keep_all = TRUE)
+    }
+    
     # Sort by title alphabetically
     if (!is.null(df) && nrow(df) > 0) {
       df <- df[order(df$title, decreasing = FALSE), ]
@@ -48,28 +54,39 @@ server <- function(input, output, session) {
     df
   })
   
+  
   # Reactive function to format the filtered data
   formattedBooks <- reactive({
     df <- filteredBooks()
     if (!is.null(df) && nrow(df) > 0) {
-      # Create formatted strings with zebra stripe classes
+      # Create formatted strings with proper links
       formatted_strings <- sapply(1:nrow(df), function(i) {
+        # Determine the appropriate link (hdl, doi, or plain text)
+        link <- if (df$hdl[i] != "" && !is.na(df$hdl[i])) {
+          paste0("<a href='", df$hdl[i], "' style='color: #002c3d; text-decoration: underline;' target='_blank' class='hover-underline'>", df$title[i], "</a>")
+        } else if (df$doi[i] != "" && !is.na(df$doi[i])) {
+          paste0("<a href='", df$doi[i], "' style='color: #002c3d; text-decoration: underline;' target='_blank' class='hover-underline'>", df$title[i], "</a>")
+        } else {
+          paste0("<span style='color: #002c3d;'>", df$title[i], "</span>")
+        }
+        
+        # Format the full entry
         paste0(
           "<div style='margin-bottom: 10px;'>", # Add bottom margin
-          "<strong><a href='https://hdl.handle.net/", df$hdl[i], 
-          "' style='color: #002c3d; text-decoration: underline;' target='_blank' class='hover-underline'>",
-          df$title[i], "</a></strong>. ", 
+          "<strong>", link, "</strong>. ", 
           "<span style='color: #002c3d;'>", df$Author[i], ". (", 
-          df$Year[i], "). Loughborough University. Book. </span>",
+          df$Year[i], "). Loughborough University. Book.</span>",
           "</div>"
         )
       })
+      
       # Return the formatted strings as a single string
       paste(formatted_strings, collapse = "")
     } else {
       "No results found."
     }
   })
+  
   
   # Render the filtered and formatted books
   output$bookDetails <- renderUI({
