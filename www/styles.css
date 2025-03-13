@@ -92,8 +92,6 @@ a.hover-underline:hover {
   font-weight: bold;
   font-size: 28px;
   display: inline; /* Keep it in the same line */
-  text-decoration: underline; /* Underline the title */
-  text-decoration-color: #009BC9; /* Set underline color */
 }
 
 .wedc-subtitle {

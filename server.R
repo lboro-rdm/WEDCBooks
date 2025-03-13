@@ -23,7 +23,6 @@ server <- function(input, output, session) {
     }
   })
   
-  
   # Reactive function to filter books based on inputs
   filteredBooks <- reactive({
     df <- booksData()
@@ -54,12 +53,11 @@ server <- function(input, output, session) {
     df
   })
   
-  
-  # Reactive function to format the filtered data
+  # Reactive function to format the filtered data in a grid
   formattedBooks <- reactive({
     df <- filteredBooks()
     if (!is.null(df) && nrow(df) > 0) {
-      # Create formatted strings with proper links
+      # Create formatted strings with proper links and thumbnails
       formatted_strings <- sapply(1:nrow(df), function(i) {
         # Determine the appropriate link (hdl, doi, or plain text)
         link <- if (df$hdl[i] != "" && !is.na(df$hdl[i])) {
@@ -70,23 +68,32 @@ server <- function(input, output, session) {
           paste0("<span style='color: #002c3d;'>", df$title[i], "</span>")
         }
         
-        # Format the full entry
+        # Thumbnail path
+        thumbnail_path <- paste0("thumbnails/", df$article_id[i], ".jpg")  # Adjust the path as needed
+        
+        # Format the full entry for the grid layout
         paste0(
-          "<div style='margin-bottom: 10px;'>", # Add bottom margin
-          "<strong>", link, "</strong>. ", 
+          "<div style='text-align: left; margin: 10px;'>", # Center align and add margin
+          "<img src='", thumbnail_path, "' alt='Thumbnail' style='width: 100px; height: auto;'/>",  # Thumbnail image
+          "<br/><strong>", link, "</strong>.<br/>",  # Title link
           "<span style='color: #002c3d;'>", df$Author[i], ". (", 
-          df$Year[i], "). Loughborough University. Book.</span>",
+          df$Year[i], ").</span>",
           "</div>"
         )
       })
       
-      # Return the formatted strings as a single string
-      paste(formatted_strings, collapse = "")
+      # Wrap in a grid container
+      grid_output <- paste0(
+        "<div style='display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px;'>", 
+        paste(formatted_strings, collapse = ""),
+        "</div>"
+      )
+      
+      return(grid_output)  # Return the formatted strings as a grid layout
     } else {
-      "No results found."
+      return("No results found.")
     }
   })
-  
   
   # Render the filtered and formatted books
   output$bookDetails <- renderUI({
