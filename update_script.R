@@ -72,11 +72,13 @@ combined_df <- data.frame(
   Year = character(),
   hdl = character(),
   doi = character(),
+  thumbnail = character(),
   stringsAsFactors = FALSE
 )
 
 # Iterate through article IDs to get article citation data
 for (i in 1:nrow(article_details)) {
+  print(i)
   article_id <- article_details$article_id[i]
   full_url_citation <- paste0(endpoint2, article_id)
   
@@ -102,14 +104,20 @@ for (i in 1:nrow(article_details)) {
     NA
   }
   
-  hdl <- if (!is.null(citation_data$handle)) {
-    citation_data$handle
+  hdl <- if (!is.null(citation_data$handle) && citation_data$handle != "") {
+    paste0("https://hdl.handle.net/", citation_data$handle)
   } else {
-    NA
+    ""
   }
   
-  doi <- if (!is.null(citation_data$doi)) {
-    citation_data$doi
+  doi <- if (!is.null(citation_data$doi) && citation_data$doi != "") {
+    paste0("https://doi.org/", citation_data$doi)
+  } else {
+    ""
+  }
+  
+  thumbnail <- if (!is.null(citation_data$thumb)) {
+    paste(citation_data$thumb)
   } else {
     NA
   }
@@ -123,11 +131,40 @@ for (i in 1:nrow(article_details)) {
     Year = year,
     hdl = hdl,
     doi = doi,
+    thumbnail = thumbnail,
     stringsAsFactors = FALSE
   ))
 }
 
-
 # Save the final dataset to a CSV file
 output_file <- "combined_data.csv"
 write.csv(combined_df, file = output_file, row.names = FALSE)
+
+
+# Download thumbnails -----------------------------------------------------
+
+# Ensure the directory exists
+output_directory <- "www/thumbnails"
+dir.create(output_directory, showWarnings = FALSE)
+
+# Iterate through the combined_df to download thumbnails
+for (i in 1:nrow(combined_df)) {
+  thumbnail_url <- combined_df$thumbnail[i]
+  
+  # Check if the thumbnail URL is not NA or empty
+  if (!is.na(thumbnail_url) && thumbnail_url != "") {
+    # Construct the filename using the article ID
+    filename <- paste0(output_directory, "/", combined_df$article_id[i], ".jpg")  # Adjust the extension if needed
+    
+    # Download the thumbnail
+    tryCatch({
+      download.file(thumbnail_url, filename, mode = "wb")  # Use mode = "wb" for binary files
+      message("Downloaded thumbnail for article ID: ", combined_df$article_id[i])
+    }, error = function(e) {
+      warning("Failed to download thumbnail for article ID: ", combined_df$article_id[i], " - ", e$message)
+    })
+  } else {
+    message("No thumbnail URL for article ID: ", combined_df$article_id[i])
+  }
+}
+
