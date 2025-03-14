@@ -140,6 +140,7 @@ for (i in 1:nrow(article_details)) {
 output_file <- "combined_data.csv"
 write.csv(combined_df, file = output_file, row.names = FALSE)
 
+
 # Download thumbnails -----------------------------------------------------
 
 # Ensure the directory exists
