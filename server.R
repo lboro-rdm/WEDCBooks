@@ -71,10 +71,11 @@ server <- function(input, output, session) {
         # Thumbnail path
         thumbnail_path <- paste0("thumbnails/", df$article_id[i], ".jpg")  # Adjust the path as needed
         
-        # Format the full entry for the grid layout
+        alt_text <- paste("Thumbnail for item", df$article_id[i])
+
         paste0(
           "<div style='text-align: left; margin: 10px;'>", # Center align and add margin
-          "<img src='", thumbnail_path, "' alt='Thumbnail' style='width: 100px; height: auto;'/>",  # Thumbnail image
+          "<img src='", thumbnail_path, "' alt='", alt_text, "' style='width: 100px; height: auto;'/>",  # Thumbnail image
           "<br/><strong>", link, "</strong>.<br/>",  # Title link
           "<span style='color: #002c3d;'>", df$Author[i], ". (", 
           df$Year[i], ").</span>",
