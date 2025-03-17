@@ -1,6 +1,6 @@
 library(httr)
 library(jsonlite)
-library(dplyr)
+library(tidyverse)
 library(lubridate)
 
 # Read collection IDs and titles
@@ -98,11 +98,28 @@ for (i in 1:nrow(article_details)) {
     NA
   }
   
-  year <- if (!is.null(citation_data$published_date)) {
+  # Default to NA
+  pub_date <- NA
+  
+  # Check if the 15th element exists and is not empty
+  if (length(citation_data$custom_fields$value) >= 15 && citation_data$custom_fields$value[[15]] != "") {
+    pub_date <- citation_data$custom_fields$value[[15]]
+  }
+  
+  # Convert to year, handling both "YYYY" and "YYYY-MM-DD"
+  year <- if (!is.na(pub_date) && pub_date != "") {
+    if (grepl("^\\d{4}$", pub_date)) {  # If it's just "YYYY"
+      as.numeric(pub_date)
+    } else {
+      parsed_date <- tryCatch(as.Date(pub_date, format = "%Y-%m-%d"), error = function(e) NA)
+      if (!is.na(parsed_date)) year(parsed_date) else NA
+    }
+  } else if (!is.null(citation_data$published_date)) {
     year(as.Date(citation_data$published_date))
   } else {
     NA
   }
+  
   
   hdl <- if (!is.null(citation_data$handle) && citation_data$handle != "") {
     paste0("https://hdl.handle.net/", citation_data$handle)
@@ -140,7 +157,6 @@ for (i in 1:nrow(article_details)) {
 output_file <- "combined_data.csv"
 write.csv(combined_df, file = output_file, row.names = FALSE)
 
-
 # Download thumbnails -----------------------------------------------------
 
 # Ensure the directory exists
@@ -167,4 +183,3 @@ for (i in 1:nrow(combined_df)) {
     message("No thumbnail URL for article ID: ", combined_df$article_id[i])
   }
 }
-
