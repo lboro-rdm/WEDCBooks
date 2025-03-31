@@ -1,7 +1,22 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+}
+
 /* General Page Styling */
 body {
   background-color: #FFFFFF;
-  font-family: Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
   font-size: 16px;
   color: #333333;
   margin: 0;
