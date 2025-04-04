@@ -123,6 +123,7 @@ a.hover-underline:hover {
   margin-right: 30px; /* Adjust right margin */
   height: auto; /* Maintain aspect ratio */
   min-width: 94px; /* Ensure width is at least 25mm */
+  max-width: 6cm;
 }
 
 .wedc-subtitle {
