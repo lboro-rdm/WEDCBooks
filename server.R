@@ -69,7 +69,7 @@ server <- function(input, output, session) {
         }
         
         # Thumbnail path
-        thumbnail_path <- paste0("thumbnails/", df$article_id[i], ".jpg")  # Adjust the path as needed
+        thumbnail_path <- paste0("thumbnails/", df$article_id[i], ".png")  # Adjust the path as needed
         
         alt_text <- paste("Thumbnail for item", df$article_id[i])
 
