@@ -56,8 +56,8 @@ ui <- tags$html(
         textInput("authorSearch", "Search by Author:", placeholder = "Enter author\'s name"),
         textInput("titleSearch", "Search by Title:", placeholder = "Enter book or manual title"),
         p(),
-        p("Water Engineering and Development Centre (WEDC) produces and disseminates quality, relevant and accessible knowledge products to meet the needs of academics, policymakers and practitioners working in various aspects of water engineering and development."),
-        p("Books and manuals represent our substantial body of knowledge in water management, engineering and other international development-related subjects developed over 50 years.")
+        p("The Water Engineering and Development Centre (WEDC) produces and disseminates quality, relevant and accessible knowledge products to meet the needs of academics, policymakers and practitioners working in various aspects of water engineering and development."),
+        p("Our books, manuals and other resources represent a substantial body of knowledge in water management, engineering and other international development-related subjects developed over 50 years.")
       ),
       mainPanel(
         withSpinner(uiOutput("bookDetails"), type = 3, color = "#009BC9", color.background = "#FFFFFF")
