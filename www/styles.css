@@ -31,15 +31,23 @@ h1, .title {
   margin-bottom: 10px;
 }
 
-/* Banner Styling */
 .black-banner {
   background-color: #000000;
   color: white;
   width: 100vw;
   margin: 0;
-  padding: 10px 40px; /* side padding can stay for inner spacing */
+  padding: 10px 40px;           /* Controls the top/bottom spacing */
   box-sizing: border-box;
-  font-size: 28px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;          /* Vertically centers content */
+}
+
+.banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .blue-banner {
@@ -47,9 +55,11 @@ h1, .title {
   color: white;
   width: 100vw;
   margin: 0;
-  padding: 10px 40px; /* side padding can stay for inner spacing */
+  padding: 10px 40px;           /* Controls the top/bottom spacing */
   box-sizing: border-box;
-  font-size: 28px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;          /* Vertically centers content */
 }
 
 .white-banner {
@@ -85,12 +95,11 @@ h1, .title {
 /* Return Link in Blue Banner */
 .return-link {
   color: white;
-  text-decoration: underline;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .return-link:hover {
-  text-decoration: none;
+  text-decoration: underline;
   color: #e0e0e0;
 }
 
