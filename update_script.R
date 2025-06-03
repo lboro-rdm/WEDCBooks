@@ -143,28 +143,28 @@ write.csv(combined_df, file = output_file, row.names = FALSE)
 
 # Download thumbnails -----------------------------------------------------
 
-# Ensure the directory exists
-output_directory <- "www/thumbnails"
-dir.create(output_directory, showWarnings = FALSE)
-
-# Iterate through the combined_df to download thumbnails
-for (i in 1:nrow(combined_df)) {
-  thumbnail_url <- combined_df$thumbnail[i]
-  
-  # Check if the thumbnail URL is not NA or empty
-  if (!is.na(thumbnail_url) && thumbnail_url != "") {
-    # Construct the filename using the article ID
-    filename <- paste0(output_directory, "/", combined_df$article_id[i], ".jpg")  # Adjust the extension if needed
-    
-    # Download the thumbnail
-    tryCatch({
-      download.file(thumbnail_url, filename, mode = "wb")  # Use mode = "wb" for binary files
-      message("Downloaded thumbnail for article ID: ", combined_df$article_id[i])
-    }, error = function(e) {
-      warning("Failed to download thumbnail for article ID: ", combined_df$article_id[i], " - ", e$message)
-    })
-  } else {
-    message("No thumbnail URL for article ID: ", combined_df$article_id[i])
-  }
-}
+# # Ensure the directory exists
+# output_directory <- "www/thumbnails"
+# dir.create(output_directory, showWarnings = FALSE)
+# 
+# # Iterate through the combined_df to download thumbnails
+# for (i in 1:nrow(combined_df)) {
+#   thumbnail_url <- combined_df$thumbnail[i]
+#   
+#   # Check if the thumbnail URL is not NA or empty
+#   if (!is.na(thumbnail_url) && thumbnail_url != "") {
+#     # Construct the filename using the article ID
+#     filename <- paste0(output_directory, "/", combined_df$article_id[i], ".jpg")  # Adjust the extension if needed
+#     
+#     # Download the thumbnail
+#     tryCatch({
+#       download.file(thumbnail_url, filename, mode = "wb")  # Use mode = "wb" for binary files
+#       message("Downloaded thumbnail for article ID: ", combined_df$article_id[i])
+#     }, error = function(e) {
+#       warning("Failed to download thumbnail for article ID: ", combined_df$article_id[i], " - ", e$message)
+#     })
+#   } else {
+#     message("No thumbnail URL for article ID: ", combined_df$article_id[i])
+#   }
+# }
 
